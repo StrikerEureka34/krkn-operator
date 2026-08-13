@@ -29,8 +29,7 @@ spec:
     - jsonPath: .spec.role
       name: Role
       type: string
-    - description: Whether this account may sign in
-      jsonPath: .status.active
+    - jsonPath: .status.active
       name: Active
       type: boolean
     - jsonPath: .metadata.creationTimestamp
@@ -74,6 +73,7 @@ spec:
                 description: Name is the first name of the user
                 type: string
               organization:
+                description: Organization is the user's organization name
                 type: string
               passwordSecretRef:
                 description: |-
@@ -88,16 +88,7 @@ spec:
                 - admin
                 type: string
               surname:
-                description: Surname is the family name of the user
-                type: string
-              timezone:
-                default: UTC
-                description: |-
-                  Timezone selects how timestamps are rendered for this user.
-                  Accepts an IANA zone written as <region>/<city>
-                enum:
-                - UTC
-                - Local
+                description: Surname is the last name of the user
                 type: string
               userId:
                 description: UserID is the email address of the user, used as the
