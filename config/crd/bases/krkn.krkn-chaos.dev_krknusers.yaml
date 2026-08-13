@@ -69,31 +69,6 @@ spec:
               KrknUser serves as an authentication entity for the REST APIs.
               Each KrknUser instance has an associated Secret containing the hashed password.
             properties:
-              apiToken:
-                description: APIToken is the bearer token this user presents to the
-                  REST API
-                type: string
-              apiTokenRef:
-                description: APITokenRef names the Secret holding the bearer token
-                type: string
-              integrations:
-                additionalProperties:
-                  description: IntegrationBinding pins one external system to this
-                    user
-                  properties:
-                    endpoints:
-                      items:
-                        type: string
-                      type: array
-                    enabled:
-                      default: true
-                      description: Enabled turns this integration on for the user
-                      type: boolean
-                  required:
-                  - enabled
-                  type: object
-                description: Integrations maps an external system name to its binding
-                type: object
               name:
                 description: Name is the first name of the user
                 type: string
