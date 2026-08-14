@@ -1,0 +1,82 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: krknwebhooks.krkn.krkn-chaos.dev
+spec:
+  group: krkn.krkn-chaos.dev
+  names:
+    kind: KrknWebhook
+    listKind: KrknWebhookList
+    plural: krknwebhooks
+    shortNames:
+    - kwh
+    singular: krknwebhook
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.url
+      name: URL
+      type: string
+    - jsonPath: .status.failures
+      name: Failures
+      type: integer
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: KrknWebhook is the Schema for the krknwebhooks API.
+        properties:
+          apiVersion:
+            description: APIVersion defines the versioned schema of this representation
+              of an object.
+            type: string
+          kind:
+            description: Kind is a string value representing the REST resource this
+              object represents.
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KrknWebhookSpec defines the desired state of KrknWebhook.
+            properties:
+              enabled:
+                default: true
+                description: Enabled turns delivery on for this webhook
+                type: boolean
+              events:
+                description: Events selects which run transitions are delivered
+                items:
+                  enum:
+                  - started
+                  - completed
+                  - failed
+                  type: string
+                type: array
+              url:
+                description: URL is the endpoint notified when a scenario run changes
+                  state
+                type: string
+            required:
+            - url
+            type: object
+          status:
+            description: KrknWebhookStatus defines the observed state of KrknWebhook.
+            properties:
+              failures:
+                description: Failures is the count of consecutive delivery failures
+                type: integer
+              lastDelivery:
+                description: LastDelivery is when a payload was last sent successfully
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
