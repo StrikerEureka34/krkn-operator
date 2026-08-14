@@ -32,6 +32,9 @@ spec:
     - jsonPath: .status.active
       name: Active
       type: boolean
+    - jsonPath: .spec.department
+      name: Department
+      type: string
     - jsonPath: .metadata.creationTimestamp
       name: Age
       type: date
@@ -69,8 +72,18 @@ spec:
               KrknUser serves as an authentication entity for the REST APIs.
               Each KrknUser instance has an associated Secret containing the hashed password.
             properties:
+              displayLocale:
+                default: ""
+                description: DisplayLocale overrides the console language for this
+                  user
+                type: string
               name:
                 description: Name is the first name of the user
+                type: string
+              sessionPolicy:
+                default: '{"idleTimeoutSeconds":900,"maxConcurrentSessions":3,"reauthOnPrivilegeChange":true}'
+                description: SessionPolicy is the serialised session policy applied
+                  to this user
                 type: string
               organization:
                 description: Organization is the user's organization name
