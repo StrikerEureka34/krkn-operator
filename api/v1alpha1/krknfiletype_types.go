@@ -43,10 +43,14 @@ type KrknFileTypeSpec struct {
 	// +optional
 	// +kubebuilder:validation:Pattern=`^#[0-9A-Fa-f]{6}$|^$`
 	Color string `json:"color,omitempty"`
+
+	// +optional
+	Icon string `json:"icon,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:printcolumn:name="Color",type=string,JSONPath=`.spec.color`
+// +kubebuilder:printcolumn:name="Retention",type=string,JSONPath=`.spec.retention`
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:shortName=kft
 

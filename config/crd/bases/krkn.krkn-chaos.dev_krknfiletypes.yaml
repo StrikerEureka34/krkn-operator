@@ -20,6 +20,9 @@ spec:
     - jsonPath: .spec.color
       name: Color
       type: string
+    - jsonPath: .spec.retention
+      name: Retention
+      type: string
     - jsonPath: .metadata.creationTimestamp
       name: Age
       type: date
@@ -68,6 +71,8 @@ spec:
                   Color is an optional hex color for UI display (e.g., "#FF5733")
                   If empty, the UI will use a default color
                 pattern: ^#[0-9A-Fa-f]{6}$|^$
+                type: string
+              icon:
                 type: string
               name:
                 description: |-
