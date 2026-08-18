@@ -1,0 +1,109 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: krknwebhooks.krkn.krkn-chaos.dev
+spec:
+  group: krkn.krkn-chaos.dev
+  names:
+    kind: KrknWebhook
+    listKind: KrknWebhookList
+    plural: krknwebhooks
+    shortNames:
+    - kwh
+    singular: krknwebhook
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.event
+      name: Event
+      type: string
+    - jsonPath: .status.failures
+      name: Failures
+      type: integer
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          KrknWebhook is the Schema for the krknwebhooks API.
+          It registers an external endpoint to notify when a scenario run changes state.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              KrknWebhookSpec defines the desired state of KrknWebhook.
+              A webhook posts scenario lifecycle events to an external endpoint, so a chaos
+              run can notify a dashboard or a chat channel without polling the API.
+            properties:
+              event:
+                default: completed
+                description: Event selects which scenario lifecycle event triggers
+                  the post
+                enum:
+                - started
+                - completed
+                - failed
+                type: string
+              retryLimit:
+                default: 3
+                description: |-
+                  RetryLimit is how many times a failed post is retried before the event
+                  is dropped
+                format: int32
+                type: integer
+              signingToken:
+                description: |-
+                  SigningToken is the shared secret used to sign the payload body,
+                  sent as the X-Krkn-Signature header
+                type: string
+              tokenSecretRef:
+                description: |-
+                  TokenSecretRef names a Secret holding the signing token, preferred over
+                  SigningToken so the value never appears in the resource
+                type: string
+              url:
+                description: URL is the HTTPS endpoint that receives the event payload
+                type: string
+            required:
+            - url
+            type: object
+          status:
+            description: KrknWebhookStatus defines the observed state of KrknWebhook.
+            properties:
+              failures:
+                description: Failures counts consecutive failed deliveries, reset
+                  on success
+                format: int32
+                type: integer
+              lastDelivery:
+                description: LastDelivery is when the most recent post was accepted
+                  by the endpoint
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
