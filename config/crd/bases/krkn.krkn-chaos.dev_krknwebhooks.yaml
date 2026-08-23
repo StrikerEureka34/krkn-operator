@@ -69,7 +69,8 @@ spec:
                 default: 3
                 description: |-
                   RetryLimit is how many times a failed post is retried before the event
-                  is dropped
+                  is dropped. Set it to 0 to disable retries, so the first failure drops
+                  the event immediately.
                 format: int32
                 type: integer
               signingToken:

@@ -45,7 +45,8 @@ type KrknWebhookSpec struct {
 	TokenSecretRef string `json:"tokenSecretRef,omitempty"`
 
 	// RetryLimit is how many times a failed post is retried before the event
-	// is dropped
+	// is dropped. Set it to 0 to disable retries, so the first failure drops
+	// the event immediately.
 	// +optional
 	// +kubebuilder:default=3
 	RetryLimit int32 `json:"retryLimit,omitempty"`
